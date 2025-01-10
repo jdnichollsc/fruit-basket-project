@@ -2,7 +2,7 @@
 
 ## Overview
 
-The goal of this project is to test my understanding of core JS and React fundamentals.
+The goal of this project is to test the understanding of core JS and React fundamentals.
 
 ## Prompt
 
