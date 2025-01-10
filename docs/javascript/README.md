@@ -1,4 +1,49 @@
-# JavaScript
+# JavaScript Guide
+
+## Table of Contents
+
+1. [Basic 1](#basic-1)
+   - Strict Mode
+   - Code Examples
+   - Functions
+   - Exceptions
+   - Code Conventions
+
+2. [Basic 2](#basic-2)
+   - Prototypal Inheritance
+   - Regular Expressions
+   - OOP (Object Oriented Programming)
+   - Classes vs Prototypes
+   - Creating Objects
+   - Properties of Objects
+   - Methods of Objects
+   - Inheritance
+   - Private Methods and Properties
+
+3. [Basic 3](#basic-3)
+   - Let + Const
+   - Arrow Functions
+   - Classes
+   - Template Strings/Literals
+   - Modules
+   - Asynchronous Programming
+   - Promises
+   - Promise Methods
+   - Callback Hell
+
+4. [Architecture 1](#architecture-1)
+   - Method Invocation Pattern
+   - Function Invocation Pattern
+   - Constructor Invocation Pattern
+   - Apply Invocation Pattern
+   - The Module Pattern
+   - Constructor Chaining with `call`
+
+5. [Architecture 2](#architecture-2)
+   - Constructor Pattern
+   - Module Pattern
+   - Singleton Pattern
+   - Observer Pattern
 
 ## Basic 1
 
@@ -1045,6 +1090,8 @@ step1()
 
 ## Architecture 1
 
+Design patterns are a fundamental part of software development, as they provide typical solutions to commonly recurring problems in software design. Rather than providing specific pieces of software, design patterns are merely concepts that can be used to handle recurring themes in an optimized way.
+
 ### Method Invocation Pattern
 
 In JavaScript, method invocation refers to calling a function that is a property of an object (a method) using dot notation or bracket notation.
@@ -1239,84 +1286,120 @@ App.Models = (function (exports) {
 
 ### Constructor Pattern
 
-It's a way to create and initialize objects using a special constructor function, providing a way to create multiple instances of similar objects with shared behavior through prototypes
+The Constructor pattern creates objects with their own object scope, providing a template for creating multiple instances of similar objects. Each instance shares behavior via prototype but maintains its own set of data.
 
-```js
+```javascript
 function Car(make, model, year) {
   this.make = make;
   this.model = model;
   this.year = year;
 }
 
-Car.prototype.start = function () {
-  console.log("The " + this.make + " " + this.model + " is starting.");
+Car.prototype.getInfo = function() {
+  return `${this.year} ${this.make} ${this.model}`;
 };
 
-Car.prototype.stop = function () {
-  console.log("The " + this.make + " " + this.model + " is stopping.");
+Car.prototype.start = function() {
+  return `${this.getInfo()} is starting`;
 };
 
-const car1 = new Car("Toyota", "Camry", 2022);
-const car2 = new Car("Honda", "Civic", 2022);
+// Usage
+const car1 = new Car('Toyota', 'Camry', 2022);
+const car2 = new Car('Honda', 'Civic', 2023);
 
-car1.start(); // "The Toyota Camry is starting."
-car2.start(); // "The Honda Civic is starting."
-
-car1.stop(); // "The Toyota Camry is stopping."
-car2.stop(); // "The Honda Civic is stopping."
+console.log(car1.start()); // "2022 Toyota Camry is starting"
+console.log(car2.getInfo()); // "2023 Honda Civic"
 ```
 
-> 💡 **Best Practice**: Use the constructor pattern when you need to create and initialize objects with shared behavior through prototypes.
+> 💡 **Best Practice**: Use the Constructor pattern when you need to create multiple instances of similar objects that share behavior but maintain their own state.
 
 ### Module Pattern
 
-The Module Pattern is a design pattern that provides a way to create encapsulated code with private and public parts. Here's a structured explanation:
+The Module pattern encapsulates 'privacy', state and organization using closures. It provides a way to wrap public and private methods and variables inside a single object, protecting pieces from the global scope.
 
-```js
-const Logger = (function () {
-  // Private members
-  const logHistory = [];
-
-  function formatMessage(message, type) {
-    return `[${type.toUpperCase()}] ${message}`;
+```javascript
+const BankAccount = (function() {
+  // Private variables
+  let balance = 0;
+  
+  // Private function
+  function validateAmount(amount) {
+    return typeof amount === 'number' && amount > 0;
   }
-
+  
   // Public API
   return {
-    log: function (message) {
-      const formattedMessage = formatMessage(message, "info");
-      logHistory.push(formattedMessage);
-      console.log(formattedMessage);
+    deposit(amount) {
+      if (validateAmount(amount)) {
+        balance += amount;
+        return `Deposited ${amount}. New balance: ${balance}`;
+      }
+      return 'Invalid amount';
     },
-    getHistory: function () {
-      return [...logHistory];
-    },
+    getBalance() {
+      return balance;
+    }
   };
 })();
+
+// Usage
+console.log(BankAccount.deposit(100)); // "Deposited 100. New balance: 100"
+console.log(BankAccount.getBalance()); // 100
+console.log(BankAccount.balance); // undefined (private variable)
 ```
+
+> 💡 **Best Practice**: Use the Module pattern when you need to maintain privacy and state while only exposing a public API.
 
 ### Singleton Pattern
 
-The Singleton Pattern ensures a class has only one instance and provides a global point of access to it.
+The Singleton pattern ensures a class has only one instance and provides a global point of access to it. It's useful when exactly one object is needed to coordinate actions across the system.
 
-```js
-class Logger {
-  constructor() {
-    if (!Logger.instance) {
-      Logger.instance = this;
+```javascript
+const Database = (function() {
+  let instance;
+  
+  function createInstance() {
+    const connections = new Set();
+    return {
+      connect(id) {
+        connections.add(id);
+        return `Connected: ${id}`;
+      },
+      disconnect(id) {
+        connections.delete(id);
+        return `Disconnected: ${id}`;
+      },
+      getConnections() {
+        return connections.size;
+      }
+    };
+  }
+  
+  return {
+    getInstance() {
+      if (!instance) {
+        instance = createInstance();
+      }
+      return instance;
     }
-    return Logger.instance;
-  }
+  };
+})();
 
-  log(message) {
-    console.log(message);
-  }
-}
+// Usage
+const db1 = Database.getInstance();
+const db2 = Database.getInstance();
+
+console.log(db1.connect('user1')); // "Connected: user1"
+console.log(db2.connect('user2')); // "Connected: user2"
+console.log(db1.getConnections()); // 2
+console.log(db1 === db2); // true - same instance
 ```
+
+> 💡 **Best Practice**: Use the Singleton pattern when you need to ensure a class has just a single instance throughout your application's lifecycle.
 
 ### Observer Pattern
 
-The Observer pattern defines a one-to-many dependency between objects. When one object (the subject/observable) changes state, all its dependents (observers) are notified and updated automatically. This pattern is commonly used in event handling systems.
+A pattern where objects (observers) automatically receive updates when something they're watching (subject) changes state.
 
 ```javascript
 class Subject {
@@ -1334,7 +1417,7 @@ class Subject {
   }
 
   notify(data) {
-    this.observers.forEach((observer) => observer.update(data));
+    this.observers.forEach(observer => observer.update(data));
   }
 
   // Example method that changes the subject's state
@@ -1356,16 +1439,132 @@ class Observer {
 
 // Usage
 const subject = new Subject();
-const observer1 = new Observer("Observer 1");
-const observer2 = new Observer("Observer 2");
+const observer1 = new Observer('Observer 1');
+const observer2 = new Observer('Observer 2');
 
 subject.subscribe(observer1);
 subject.subscribe(observer2);
-subject.setState({ message: "Hello World" });
+subject.setState({ message: 'Hello World' });
 subject.unsubscribe(observer2);
-subject.setState({ message: "Hello Again" }); // Only observer1 notified
+subject.setState({ message: 'Hello Again' }); // Only observer1 notified
 ```
+
+The Observer pattern defines a one-to-many dependency between objects. When one object (the subject/observable) changes state, all its dependents (observers) are notified and updated automatically. This pattern is commonly used in event handling systems.
 
 > 💡 **Best Practice**: Use the Observer pattern when you need a one-to-many dependency between objects without making them tightly coupled. Ensure proper cleanup by unsubscribing observers when they're no longer needed to prevent memory leaks.
 
+### Prototype Pattern
 
+The Prototype pattern creates new objects by cloning an existing object, known as the prototype. This pattern is particularly useful when object creation is expensive or when you need to create objects with similar state and behavior.
+
+```js
+// Implementation using Constructor Function
+function Animal(name, type) {
+  this.name = name;
+  this.type = type;
+}
+
+Animal.prototype.makeSound = function() {
+  return `${this.name} makes a sound`;
+};
+
+Animal.prototype.clone = function() {
+  // Object.create is a simple way to let objects directly inherit properties from other objects, by specifying the newly created object’s prototype. The new object can access the new properties by walking down the prototype chain.
+  const clone = Object.create(Object.getPrototypeOf(this));
+  return Object.assign(clone, this);
+};
+
+// Using Constructor Function
+const dog = new Animal('Rex', 'dog');
+const clonedDog = dog.clone();
+clonedDog.name = 'Max';
+console.log(dog.makeSound());     // "Rex makes a sound"
+console.log(clonedDog.makeSound()); // "Max makes a sound"
+
+// Verify prototype chain
+console.log(dog.makeSound === clonedDog.makeSound); // true
+```
+
+The prototype pattern allows us to easily let objects access and inherit properties from other objects. Since the prototype chain allows us to access properties that aren’t directly defined on the object itself, we can avoid duplication of methods and properties, thus reducing the amount of memory used.
+
+> 💡 **Best Practice**: Use the Prototype pattern when you need to create many objects that share similar structure and behavior. Choose the implementation approach based on your needs:
+> - Use `Object.create()` for simple object cloning
+> - Use Classes for a more modern, OOP approach
+> - Use Constructor Functions when working with legacy code or when you need more control over the prototype chain
+
+### Facade Pattern
+
+The Facade pattern provides a simplified interface to a complex subsystem. It acts as a front-facing interface masking more complex underlying or structural code, making the subsystem easier to use.
+
+```javascript
+// Complex subsystem parts
+class Inventory {
+  check(item) {
+    return `Checking inventory for ${item}`;
+  }
+}
+
+class Payment {
+  makePayment(amount) {
+    return `Processing payment: $${amount}`;
+  }
+}
+
+class Shipping {
+  shipItem(item) {
+    return `Shipping ${item}`;
+  }
+}
+
+// Facade
+class OrderProcessor {
+  constructor() {
+    this.inventory = new Inventory();
+    this.payment = new Payment();
+    this.shipping = new Shipping();
+  }
+
+  // Simplified interface for processing orders
+  processOrder(item, amount) {
+    const results = [];
+    
+    results.push(this.inventory.check(item));
+    results.push(this.payment.makePayment(amount));
+    results.push(this.shipping.shipItem(item));
+    
+    return results;
+  }
+}
+
+// Usage
+const orderProcessor = new OrderProcessor();
+const results = orderProcessor.processOrder('Book', 29.99);
+
+// Client code only needs to know about the facade
+results.forEach(result => console.log(result));
+// Output:
+// "Checking inventory for Book"
+// "Processing payment: $29.99"
+// "Shipping Book"
+```
+
+> 💡 **Best Practice**: Use the Facade pattern when you need to provide a simple interface to a complex subsystem. It helps reduce coupling between client code and subsystems, making the code easier to understand and maintain.
+
+
+## Credits
+
+- [Learn JavaScript | MDN](https://developer.mozilla.org/en-US/Learn/JavaScript)
+- [A re-introduction to JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+- [The Modern JavaScript Tutorial](http://javascript.info)
+- [JavaScript Garden](http://bonsaiden.github.io/JavaScript-Garden)
+- [Eloquent JavaScript](https://eloquentjavascript.net)
+- [Understanding ES6](https://leanpub.com/understandinges6/read)
+- [Learning Advanced JavaScript](http://ejohn.org/apps/learn)
+- [Airbnb JavaScript Style Guide() {](https://github.com/airbnb/javascript)
+- [JavaScript Questions](https://github.com/lydiahallie/javascript-questions)
+- [JavaScript Vanilla Patterns](https://www.patterns.dev/vanilla)
+- [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS)
+- [Functional-Light JavaScript](https://github.com/getify/Functional-Light-JS)
+- [Clean Code concepts adapted for JavaScript](https://github.com/ryanmcdermott/clean-code-javascript)
+- [React Interview Questions](https://github.com/sudheerj/reactjs-interview-questions)
+- [Why did we build React?](https://reactjs.org/blog/2013/06/05/why-react.html)
