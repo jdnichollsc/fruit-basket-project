@@ -1,0 +1,17 @@
+{
+  "name": "@fruit-basket/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "20.3.1",
+    "@nx/react": "^20.3.1",
+    "@nx/workspace": "20.3.1",
+    "nx": "20.3.1"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

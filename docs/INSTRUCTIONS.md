@@ -6,10 +6,10 @@
 ```sh
 # Create Nx workspace
 npx create-nx-workspace@latest fruit-basket --preset=apps
-cd fruit-basket
-
-# Initialize git repository if not already done
-git init
+mv fruit-basket/* .
+# Move hidden files
+mv fruit-basket/.* . 2>/dev/null || true
+rm -rf fruit-basket
 
 # Add React capabilities
 npx nx add @nx/react
@@ -29,7 +29,7 @@ npx nx g @nx/react:lib ui --directory=shared
 npx nx g @nx/react:lib utils --directory=shared
 
 # Add testing libraries
-npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event jest @types/jest
+npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event
 
 # Add utility libraries
 npm install clsx tailwind-merge
