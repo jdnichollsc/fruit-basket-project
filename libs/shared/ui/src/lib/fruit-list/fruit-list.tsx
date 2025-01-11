@@ -3,7 +3,7 @@ import type { FruitListProps } from './fruit-list.types';
 export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: FruitListProps) {
   if (fruits.length === 0) {
     return (
-      <div className="text-center text-gray-500 py-4">
+      <div className="text-center text-base-content/60 py-4">
         No fruits available
       </div>
     );
@@ -14,16 +14,16 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
       {fruits.map((fruit) => (
         <li
           key={fruit}
-          className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm"
+          className="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
         >
-          <span className="text-gray-800">{fruit}</span>
+          <span className="text-base-content">{fruit}</span>
           <div className="space-x-2">
             <button
               type="button"
               aria-label="Edit fruit"
               onClick={() => onEdit(fruit)}
               disabled={isLoading}
-              className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-ghost btn-sm"
             >
               Edit
             </button>
@@ -32,7 +32,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
               aria-label="Delete fruit"
               onClick={() => onDelete(fruit)}
               disabled={isLoading}
-              className="px-3 py-1 text-sm text-red-600 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-ghost btn-sm text-error hover:text-error"
             >
               Delete
             </button>

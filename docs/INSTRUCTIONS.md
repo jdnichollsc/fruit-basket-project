@@ -28,26 +28,36 @@ npm install -D @testing-library/react @testing-library/jest-dom @testing-library
 npm install clsx tailwind-merge
 ```
 
-### Add TailwindCSS
+### Add TailwindCSS and DaisyUI
 ```sh
-# Install TailwindCSS and its dependencies
-npm install -D tailwindcss postcss autoprefixer
+# Install TailwindCSS, DaisyUI and their dependencies
+npm install -D tailwindcss postcss autoprefixer daisyui
 
 # Initialize TailwindCSS
 npx tailwindcss init -p
 
 # Create tailwind.config.js
-cat > tailwind.config.js << EOL
+cat > apps/web/tailwind.config.js << EOL
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    './apps/web/src/**/*.{js,ts,jsx,tsx}',
-    './libs/shared/ui/src/**/*.{js,ts,jsx,tsx}'
+    './src/**/*.{js,jsx,ts,tsx}',
+    '../../../libs/shared/ui/src/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["light", "dark"],
+    darkTheme: "dark",
+    base: true,
+    styled: true,
+    utils: true,
+    prefix: "",
+    logs: true,
+    themeRoot: ":root",
+  },
 }
 EOL
 
@@ -56,34 +66,69 @@ cat > apps/web/src/styles.css << EOL
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-base-100 text-base-content;
+  }
+}
 EOL
 ```
+
+### DaisyUI Component Classes
+
+Common DaisyUI classes used in our components:
+
+1. Form Elements:
+   - `input input-bordered`: Styled input fields
+   - `btn btn-primary`: Primary action buttons
+   - `btn btn-ghost`: Ghost buttons for secondary actions
+   - `form-control`: Form control wrapper
+
+2. Layout:
+   - `bg-base-100`: Base background color
+   - `text-base-content`: Base text color
+   - `text-error`: Error text color
+
+3. States:
+   - `hover:text-error`: Error color on hover
+   - `disabled:opacity-50`: Reduced opacity for disabled state
 
 ## Project Structure
 
 ```
 fruit-basket/
 ├── apps/
-│   └── web/                    # Main React application
+│   ├── web/                    # Main React application
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   │   ├── hooks/     # Custom React hooks
+│   │   │   │   ├── pages/     # Page components
+│   │   │   │   ├── services/  # Application services
+│   │   │   │   └── types/     # TypeScript types
+│   │   │   ├── main.tsx
+│   │   │   └── styles.css
+│   │   └── jest.config.ts
+│   └── web-e2e/               # End-to-end tests
 │       ├── src/
-│       │   ├── app/
-│       │   │   └── app.tsx
-│       │   ├── main.tsx
-│       │   └── styles.css
-│       └── jest.config.ts
+│       │   ├── e2e/           # E2E test specs
+│       │   ├── fixtures/      # Test fixtures
+│       │   └── support/       # Test support files
+│       └── cypress.config.ts
 ├── libs/
 │   └── shared/
-│       └── ui/               # Shared UI components
-│           ├── src/
-│           │   ├── lib/
-│           │   │   ├── fruit-list/
-│           │   │   ├── fruit-form/
-│           │   │   └── index.ts
-│           │   └── index.ts
-│           └── jest.config.ts
+│       ├── ui/                # Shared UI components
+│       │   ├── src/
+│       │   │   ├── lib/
+│       │   │   │   ├── fruit-list/
+│       │   │   │   ├── fruit-form/
+│       │   │   │   └── index.ts
+│       │   │   └── index.ts
+│       │   └── jest.config.ts
+│       └── utils/             # Shared utilities
 └── docs/
-    ├── INSTRUCTIONS.md       # This file
-    └── ONBOARDING.md        # Developer onboarding guide
+    ├── INSTRUCTIONS.md        # This file
+    └── ONBOARDING.md         # Developer onboarding guide
 
 ```
 
