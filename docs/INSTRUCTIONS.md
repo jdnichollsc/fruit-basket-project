@@ -14,22 +14,15 @@ rm -rf fruit-basket
 # Add React capabilities
 npx nx add @nx/react
 
-# Add TypeScript support
-npm install -D typescript @types/node @types/react @types/react-dom
-
-# Add ESLint and Prettier
-npm install -D eslint prettier eslint-config-prettier
-
-# Create the web application
-npx nx g @nx/react:app web --style=css --routing=false --e2e-test-runner=jest
+# Create the web application with TypeScript and Vite
+npx nx g @nx/react:app web --style=css --routing=false --bundler=vite --js=false --typescript
 
 # Create shared libraries
-npx nx g @nx/react:lib api --directory=shared
-npx nx g @nx/react:lib ui --directory=shared
-npx nx g @nx/react:lib utils --directory=shared
+npx nx g @nx/react:lib ui --directory=libs/shared/ui --bundler=vite
+npx nx g @nx/react:lib utils --directory=libs/shared/utils --bundler=vite
 
 # Add testing libraries
-npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event
+npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event msw
 
 # Add utility libraries
 npm install clsx tailwind-merge
@@ -66,20 +59,6 @@ cat > apps/web/src/styles.css << EOL
 EOL
 ```
 
-### Configure Testing
-```sh
-# Create Jest setup file
-cat > jest.setup.ts << EOL
-import '@testing-library/jest-dom';
-EOL
-
-# Update package.json scripts
-npm pkg set scripts.test="nx run-many --target=test --all" \
-    scripts.dev="nx serve web" \
-    scripts.build="nx build web" \
-    scripts.lint="nx run-many --target=lint --all"
-```
-
 ## Project Structure
 
 ```
@@ -94,12 +73,6 @@ fruit-basket/
 │       └── jest.config.ts
 ├── libs/
 │   └── shared/
-│       ├── api/               # API module
-│       │   ├── src/
-│       │   │   ├── lib/
-│       │   │   │   └── api.ts
-│       │   │   └── index.ts
-│       │   └── jest.config.ts
 │       └── ui/               # Shared UI components
 │           ├── src/
 │           │   ├── lib/
