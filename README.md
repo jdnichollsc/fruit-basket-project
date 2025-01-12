@@ -5,6 +5,20 @@
 - [Project Instructions](docs/INSTRUCTIONS.md) - Detailed instructions used to create the project
 - [Developer Onboarding](docs/ONBOARDING.md) - Guide for developers to get started with the codebase
 
+## Development
+
+### Pre-commit Hooks
+
+This project uses Husky to run pre-commit hooks that:
+- Lint staged files
+- Run tests on affected files
+- Auto-fix issues when possible
+
+To skip hooks (not recommended):
+```bash
+git commit -m "message" --no-verify
+```
+
 ## Overview
 
 The goal of this project is to test the understanding of core JS and React fundamentals.
