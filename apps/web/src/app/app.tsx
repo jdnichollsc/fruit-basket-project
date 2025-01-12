@@ -1,3 +1,4 @@
+import React from 'react';
 // Uncomment this line to use CSS modules
 // import styles from './app.module.css';
 import { HomePage } from './pages/HomePage';

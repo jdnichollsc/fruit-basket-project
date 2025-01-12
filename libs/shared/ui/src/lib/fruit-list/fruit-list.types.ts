@@ -1,6 +1,6 @@
 export interface FruitListProps {
   fruits: string[];
   isLoading?: boolean;
-  onEdit: (fruit: string) => void;
-  onDelete: (fruit: string) => void;
+  onEdit: (oldName: string, newName: string) => Promise<void>;
+  onDelete: (name: string) => Promise<void>;
 } 

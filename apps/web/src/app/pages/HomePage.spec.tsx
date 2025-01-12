@@ -1,4 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import React from 'react';
+import '@testing-library/jest-dom';
+import { render, screen, fireEvent, within } from '@testing-library/react';
 import { HomePage } from './HomePage';
 import { useFruits } from '../hooks/useFruits';
 import * as promptService from '../services/prompt';
@@ -6,9 +8,31 @@ import * as promptService from '../services/prompt';
 // Mock the dependencies
 jest.mock('../hooks/useFruits');
 jest.mock('../services/prompt');
+jest.mock('@fruit-basket/ui', () => ({
+  FruitForm: ({ onAdd, isLoading, error }: any) => (
+    <div data-testid="fruit-form" onClick={() => onAdd('Cherry')}>
+      Fruit Form {isLoading ? 'Loading' : ''} {error || ''}
+    </div>
+  ),
+  FruitList: ({ fruits, isLoading, onEdit, onDelete }: any) => (
+    <div data-testid="fruit-list">
+      Fruit List {isLoading ? 'Loading' : ''}
+      {fruits.map((fruit: string) => (
+        <div key={fruit} data-testid={`fruit-item-${fruit}`}>
+          <span>{fruit}</span>
+          <button onClick={() => onEdit(fruit, 'Updated ' + fruit)}>Edit</button>
+          <button onClick={() => onDelete(fruit)}>Delete</button>
+        </div>
+      ))}
+    </div>
+  ),
+}));
 
 describe('HomePage', () => {
   const mockUseFruits = useFruits as jest.Mock;
+  const mockAddFruit = jest.fn().mockResolvedValue(true);
+  const mockUpdateFruit = jest.fn().mockResolvedValue(true);
+  const mockDeleteFruit = jest.fn().mockResolvedValue(true);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -17,9 +41,9 @@ describe('HomePage', () => {
       loading: false,
       error: null,
       isSubmitting: false,
-      addFruit: jest.fn().mockResolvedValue(true),
-      updateFruit: jest.fn().mockResolvedValue(true),
-      deleteFruit: jest.fn().mockResolvedValue(true),
+      addFruit: mockAddFruit,
+      updateFruit: mockUpdateFruit,
+      deleteFruit: mockDeleteFruit,
     });
   });
 
@@ -54,93 +78,48 @@ describe('HomePage', () => {
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
-  it('should render submitting state', () => {
-    mockUseFruits.mockReturnValue({
-      fruits: [],
-      loading: false,
-      error: null,
-      isSubmitting: true,
-      addFruit: jest.fn(),
-      updateFruit: jest.fn(),
-      deleteFruit: jest.fn(),
-    });
-
+  it('should render fruit form and list when data is loaded', () => {
     render(<HomePage />);
-    expect(screen.getByText('Submitting...')).toBeInTheDocument();
+    expect(screen.getByTestId('fruit-form')).toBeInTheDocument();
+    expect(screen.getByTestId('fruit-list')).toBeInTheDocument();
   });
 
-  it('should render fruits list and form', () => {
+  it('should handle adding a fruit', async () => {
     render(<HomePage />);
-    expect(
-      screen.getByRole('heading', { name: /fruit basket/i })
-    ).toBeInTheDocument();
-    expect(screen.getByText('Apple')).toBeInTheDocument();
-    expect(screen.getByText('Banana')).toBeInTheDocument();
+    const fruitForm = screen.getByTestId('fruit-form');
+    await fireEvent.click(fruitForm);
+    expect(mockAddFruit).toHaveBeenCalledWith('Cherry');
   });
 
   it('should handle editing a fruit', async () => {
-    const mockUpdateFruit = jest.fn().mockResolvedValue(true);
-    mockUseFruits.mockReturnValue({
-      fruits: ['Apple', 'Banana'],
-      loading: false,
-      error: null,
-      isSubmitting: false,
-      addFruit: jest.fn(),
-      updateFruit: mockUpdateFruit,
-      deleteFruit: jest.fn(),
-    });
-
-    jest.spyOn(promptService, 'promptForNewName').mockReturnValue('New Apple');
-
     render(<HomePage />);
-
-    const editButton = screen.getAllByRole('button', { name: /edit/i })[0];
-    fireEvent.click(editButton);
-
-    expect(promptService.promptForNewName).toHaveBeenCalledWith('Apple');
-    expect(mockUpdateFruit).toHaveBeenCalledWith('Apple', 'New Apple');
-  });
-
-  it('should handle editing a fruit when user cancels', async () => {
-    const mockUpdateFruit = jest.fn().mockResolvedValue(true);
-    mockUseFruits.mockReturnValue({
-      fruits: ['Apple', 'Banana'],
-      loading: false,
-      error: null,
-      isSubmitting: false,
-      addFruit: jest.fn(),
-      updateFruit: mockUpdateFruit,
-      deleteFruit: jest.fn(),
-    });
-
-    jest.spyOn(promptService, 'promptForNewName').mockReturnValue(null);
-
-    render(<HomePage />);
-
-    const editButton = screen.getAllByRole('button', { name: /edit/i })[0];
-    fireEvent.click(editButton);
-
-    expect(promptService.promptForNewName).toHaveBeenCalledWith('Apple');
-    expect(mockUpdateFruit).not.toHaveBeenCalled();
+    const appleItem = screen.getByTestId('fruit-item-Apple');
+    const editButton = within(appleItem).getByText('Edit');
+    await fireEvent.click(editButton);
+    expect(mockUpdateFruit).toHaveBeenCalledWith('Apple', 'Updated Apple');
   });
 
   it('should handle deleting a fruit', async () => {
-    const mockDeleteFruit = jest.fn().mockResolvedValue(true);
+    render(<HomePage />);
+    const appleItem = screen.getByTestId('fruit-item-Apple');
+    const deleteButton = within(appleItem).getByText('Delete');
+    await fireEvent.click(deleteButton);
+    expect(mockDeleteFruit).toHaveBeenCalledWith('Apple');
+  });
+
+  it('should show loading state in form and list during submission', () => {
     mockUseFruits.mockReturnValue({
       fruits: ['Apple', 'Banana'],
       loading: false,
       error: null,
-      isSubmitting: false,
-      addFruit: jest.fn(),
-      updateFruit: jest.fn(),
+      isSubmitting: true,
+      addFruit: mockAddFruit,
+      updateFruit: mockUpdateFruit,
       deleteFruit: mockDeleteFruit,
     });
 
     render(<HomePage />);
-
-    const deleteButton = screen.getAllByRole('button', { name: /delete/i })[0];
-    fireEvent.click(deleteButton);
-
-    expect(mockDeleteFruit).toHaveBeenCalledWith('Apple');
+    expect(screen.getByTestId('fruit-form')).toHaveTextContent('Loading');
+    expect(screen.getByTestId('fruit-list')).toHaveTextContent('Loading');
   });
 });

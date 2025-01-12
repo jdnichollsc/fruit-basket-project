@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { promptForNewName } from './prompt';
 
 describe('prompt service', () => {
@@ -21,7 +24,7 @@ describe('prompt service', () => {
     expect(result).toBe('New Name');
   });
 
-  it('should handle user cancellation', () => {
+  it('should return null when user cancels', () => {
     const mockPrompt = jest.fn().mockReturnValue(null);
     window.prompt = mockPrompt;
 

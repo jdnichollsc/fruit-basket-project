@@ -14,13 +14,13 @@
   },
   "include": [
     "jest.config.ts",
-    "src/**/*.test.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
     "src/**/*.spec.ts",
-    "src/**/*.test.tsx",
     "src/**/*.spec.tsx",
-    "src/**/*.test.js",
     "src/**/*.spec.js",
-    "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts"
   ]

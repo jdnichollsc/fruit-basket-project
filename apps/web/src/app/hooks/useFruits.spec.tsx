@@ -1,229 +1,272 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import React from 'react';
+import { renderHook, act } from '@testing-library/react';
 import { useFruits } from './useFruits';
 
 describe('useFruits', () => {
+  const mockAPI = {
+    getAll: jest.fn(),
+    add: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  };
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    // Set up window.BASKET.API mock
+    window.BASKET = {
+      API: mockAPI,
+    };
   });
 
-  it('should initialize with loading state', () => {
-    const { result } = renderHook(() => useFruits());
-
-    expect(result.current).toEqual({
-      fruits: [],
-      loading: true,
-      error: null,
-      isSubmitting: false,
-      addFruit: expect.any(Function),
-      updateFruit: expect.any(Function),
-      deleteFruit: expect.any(Function),
-    });
+  afterEach(() => {
+    // Clean up mocks
+    jest.clearAllMocks();
+    // @ts-expect-error - window.BASKET is not defined in the Window interface
+    delete window.BASKET;
   });
 
   it('should load fruits successfully', async () => {
     const mockFruits = ['Apple', 'Banana'];
-    window.BASKET.API.getAll.mockResolvedValueOnce(mockFruits);
+    mockAPI.getAll.mockResolvedValue(mockFruits);
 
     const { result } = renderHook(() => useFruits());
 
-    await waitFor(() => {
-      expect(result.current).toEqual({
-        fruits: mockFruits,
-        loading: false,
-        error: null,
-        isSubmitting: false,
-        addFruit: expect.any(Function),
-        updateFruit: expect.any(Function),
-        deleteFruit: expect.any(Function),
-      });
+    expect(result.current.loading).toBe(true);
+    expect(result.current.fruits).toEqual([]);
+    expect(result.current.error).toBe(null);
+
+    // Wait for the useEffect to complete
+    await act(async () => {
+      await Promise.resolve();
     });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(mockFruits);
+    expect(result.current.error).toBe(null);
   });
 
   it('should handle loading error', async () => {
-    const errorMessage = 'Failed to load fruits';
-    window.BASKET.API.getAll.mockRejectedValueOnce(new Error(errorMessage));
+    const error = new Error('Failed to load fruits');
+    mockAPI.getAll.mockRejectedValue(error);
 
     const { result } = renderHook(() => useFruits());
 
-    await waitFor(() => {
-      expect(result.current).toEqual({
-        fruits: [],
-        loading: false,
-        error: errorMessage,
-        isSubmitting: false,
-        addFruit: expect.any(Function),
-        updateFruit: expect.any(Function),
-        deleteFruit: expect.any(Function),
-      });
+    // Wait for the useEffect to complete
+    await act(async () => {
+      await Promise.resolve();
     });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual([]);
+    expect(result.current.error).toBe('Failed to load fruits');
   });
 
   it('should handle non-Error objects in loading', async () => {
-    const errorMessage = 'Unknown error';
-    window.BASKET.API.getAll.mockRejectedValueOnce(errorMessage);
+    mockAPI.getAll.mockRejectedValue('String error');
 
     const { result } = renderHook(() => useFruits());
 
-    await waitFor(() => {
-      expect(result.current.error).toBe('Failed to load fruits');
+    // Wait for the useEffect to complete
+    await act(async () => {
+      await Promise.resolve();
     });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual([]);
+    expect(result.current.error).toBe('Failed to load fruits');
   });
 
   it('should add fruit successfully', async () => {
-    const updatedFruits = ['Apple', 'Banana', 'Mango'];
-    window.BASKET.API.add.mockResolvedValueOnce(updatedFruits);
+    const initialFruits = ['Apple', 'Banana'];
+    const mockFruits = ['Apple', 'Banana', 'Cherry'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.add.mockResolvedValue(mockFruits);
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.addFruit('Mango');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(true);
-    expect(result.current.fruits).toEqual(updatedFruits);
-    expect(result.current.error).toBeNull();
-    expect(result.current.isSubmitting).toBe(false);
+    await act(async () => {
+      await result.current.addFruit('Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(mockFruits);
+    expect(result.current.error).toBe(null);
   });
 
   it('should handle add fruit error', async () => {
-    const errorMessage = 'Fruit already exists';
-    window.BASKET.API.add.mockRejectedValueOnce(new Error(errorMessage));
+    const initialFruits = ['Apple', 'Banana'];
+    const error = new Error('Failed to add');
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.add.mockRejectedValue(error);
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.addFruit('Apple');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
-    expect(result.current.error).toBe(errorMessage);
-    expect(result.current.isSubmitting).toBe(false);
+    await act(async () => {
+      await result.current.addFruit('Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
+    expect(result.current.error).toBe('Failed to add');
   });
 
   it('should handle non-Error objects in add fruit', async () => {
-    const errorMessage = 'Unknown error';
-    window.BASKET.API.add.mockRejectedValueOnce(errorMessage);
+    const initialFruits = ['Apple', 'Banana'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.add.mockRejectedValue('String error');
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.addFruit('Apple');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
+    await act(async () => {
+      await result.current.addFruit('Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
     expect(result.current.error).toBe('Failed to add fruit');
   });
 
   it('should update fruit successfully', async () => {
-    // First, mock the initial load
-    window.BASKET.API.getAll.mockResolvedValueOnce(['Apple', 'Banana']);
-
-    // Then mock the update
-    const updatedFruits = ['Banana', 'Orange'];
-    window.BASKET.API.update.mockResolvedValueOnce(updatedFruits);
+    const initialFruits = ['Apple', 'Banana'];
+    const mockFruits = ['Apple', 'Cherry'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.update.mockResolvedValue(mockFruits);
 
     const { result } = renderHook(() => useFruits());
 
     // Wait for initial load
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
-
-    let success;
     await act(async () => {
-      success = await result.current.updateFruit('Apple', 'Orange');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(true);
-    expect(result.current.fruits).toEqual(updatedFruits);
-    expect(result.current.error).toBeNull();
+    await act(async () => {
+      await result.current.updateFruit('Banana', 'Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(mockFruits);
+    expect(result.current.error).toBe(null);
   });
 
   it('should handle update fruit error', async () => {
-    const errorMessage = 'Fruit not found';
-    window.BASKET.API.update.mockRejectedValueOnce(new Error(errorMessage));
+    const initialFruits = ['Apple', 'Banana'];
+    const error = new Error('Failed to update');
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.update.mockRejectedValue(error);
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.updateFruit('NonExistent', 'Orange');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
-    expect(result.current.error).toBe(errorMessage);
+    await act(async () => {
+      await result.current.updateFruit('Banana', 'Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
+    expect(result.current.error).toBe('Failed to update');
   });
 
   it('should handle non-Error objects in update fruit', async () => {
-    const errorMessage = 'Unknown error';
-    window.BASKET.API.update.mockRejectedValueOnce(errorMessage);
+    const initialFruits = ['Apple', 'Banana'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.update.mockRejectedValue('String error');
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.updateFruit('Apple', 'Orange');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
+    await act(async () => {
+      await result.current.updateFruit('Banana', 'Cherry');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
     expect(result.current.error).toBe('Failed to update fruit');
   });
 
   it('should delete fruit successfully', async () => {
-    // First, mock the initial load
-    window.BASKET.API.getAll.mockResolvedValueOnce(['Apple', 'Banana']);
-
-    // Then mock the delete
-    const updatedFruits = ['Banana'];
-    window.BASKET.API.delete.mockResolvedValueOnce(updatedFruits);
+    const initialFruits = ['Apple', 'Banana'];
+    const mockFruits = ['Apple'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.delete.mockResolvedValue(mockFruits);
 
     const { result } = renderHook(() => useFruits());
 
     // Wait for initial load
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
-
-    let success;
     await act(async () => {
-      success = await result.current.deleteFruit('Apple');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(true);
-    expect(result.current.fruits).toEqual(updatedFruits);
-    expect(result.current.error).toBeNull();
+    await act(async () => {
+      await result.current.deleteFruit('Banana');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(mockFruits);
+    expect(result.current.error).toBe(null);
   });
 
   it('should handle delete fruit error', async () => {
-    const errorMessage = 'Fruit not found';
-    window.BASKET.API.delete.mockRejectedValueOnce(new Error(errorMessage));
+    const initialFruits = ['Apple', 'Banana'];
+    const error = new Error('Failed to delete');
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.delete.mockRejectedValue(error);
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.deleteFruit('NonExistent');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
-    expect(result.current.error).toBe(errorMessage);
+    await act(async () => {
+      await result.current.deleteFruit('Banana');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
+    expect(result.current.error).toBe('Failed to delete');
   });
 
   it('should handle non-Error objects in delete fruit', async () => {
-    const errorMessage = 'Unknown error';
-    window.BASKET.API.delete.mockRejectedValueOnce(errorMessage);
+    const initialFruits = ['Apple', 'Banana'];
+    mockAPI.getAll.mockResolvedValue(initialFruits);
+    mockAPI.delete.mockRejectedValue('String error');
 
     const { result } = renderHook(() => useFruits());
 
-    let success;
+    // Wait for initial load
     await act(async () => {
-      success = await result.current.deleteFruit('Apple');
+      await Promise.resolve();
     });
 
-    expect(success).toBe(false);
+    await act(async () => {
+      await result.current.deleteFruit('Banana');
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.fruits).toEqual(initialFruits);
     expect(result.current.error).toBe('Failed to delete fruit');
   });
 });

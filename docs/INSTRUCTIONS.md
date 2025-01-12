@@ -166,26 +166,6 @@ We'll follow these steps for each feature:
 5. Write integration test
 6. Implement integration
 
-### Example Test Structure
-
-```typescript
-// shared-api/src/lib/__tests__/api.spec.ts
-describe('FruitBasketAPI', () => {
-  describe('getAll', () => {
-    it('should return all fruits after 2 seconds', async () => {
-      // Test implementation
-    });
-  });
-});
-
-// shared-ui/src/lib/fruit-list/__tests__/fruit-list.spec.tsx
-describe('FruitList', () => {
-  it('should display loading state initially', () => {
-    // Test implementation
-  });
-});
-```
-
 ## Utility Functions
 
 Create a utils library:
@@ -196,7 +176,7 @@ npx nx g @nx/react:lib utils --directory=shared
 Add the following utilities:
 
 ```typescript
-// shared/utils/src/lib/styles.ts
+// libs/shared/utils/src/lib/styles.ts
 import clsx, { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

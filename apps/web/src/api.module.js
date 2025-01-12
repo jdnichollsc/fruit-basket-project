@@ -1,3 +1,6 @@
+// Initialize the BASKET object if it doesn't exist
+window.BASKET = window.BASKET || {};
+
 BASKET.API = (() => {
   const _fruits = [
     'Apple',

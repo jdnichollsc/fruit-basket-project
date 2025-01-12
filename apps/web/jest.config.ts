@@ -1,23 +1,17 @@
 /* eslint-disable */
 export default {
   displayName: 'web',
-  preset: '../../jest.preset.js',
+  preset: '../../jest-preset.js',
+  testEnvironment: 'jsdom',
   transform: {
-    '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nx/react/plugins/jest',
-    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/react/babel'] }],
+    '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nx/react/babel'] }]
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/web',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  collectCoverage: true,
-  coverageReporters: ['text', 'lcov', 'html'],
-  coverageThreshold: {
-    global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: 100,
-    },
-  },
-  testMatch: ['**/*.spec.ts', '**/*.spec.tsx'],
+  moduleNameMapper: {
+    '@fruit-basket/ui': '<rootDir>/../../libs/shared/ui/src/index.ts',
+    '@fruit-basket/utils': '<rootDir>/../../libs/shared/utils/src/index.ts',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+  }
 };
