@@ -5,6 +5,7 @@ import { useFruits } from '../hooks/useFruits';
 
 // Test comment to verify Husky pre-commit hooks
 function SkeletonPage() {
+  console.log('test linting');
   return (
     <div className="container mx-auto p-4">
       <h1 data-testid="loading-title" className="text-2xl font-bold mb-4 skeleton w-48 h-8">
