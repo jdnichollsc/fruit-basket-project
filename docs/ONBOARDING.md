@@ -13,23 +13,23 @@ The Fruit Basket project is a React application that demonstrates core JavaScrip
 
 1. Clone the repository:
 ```sh
-git clone [repository-url]
-cd fruit-basket
+git clone https://github.com/jdnichollsc/fruit-basket-project
+cd fruit-basket-project
 ```
 
 2. Install dependencies:
 ```sh
-npm install
+npm ci
 ```
 
 3. Start the development server:
 ```sh
-npx nx serve web
+npm run dev
 ```
 
 4. Run tests:
 ```sh
-npx nx run-many --target=test --all
+npm test
 ```
 
 ## Project Structure
@@ -37,7 +37,6 @@ npx nx run-many --target=test --all
 The project follows a monorepo structure using Nx:
 
 - `apps/web`: Main React application
-- `libs/shared/api`: API implementation
 - `libs/shared/ui`: Reusable UI components
 - `libs/shared/utils`: Utility functions
 
@@ -86,7 +85,7 @@ describe('FruitList', () => {
 ### Creating a New Component
 
 ```sh
-npx nx g @nx/react:component my-component --project=shared-ui
+npx nx g @nx/react:component my-component --project=ui
 ```
 
 ### Running Tests
@@ -96,10 +95,10 @@ npx nx g @nx/react:component my-component --project=shared-ui
 npx nx run-many --target=test --all
 
 # Test specific project
-npx nx test shared-ui
+npx nx test ui
 
 # Test in watch mode
-npx nx test shared-ui --watch
+npx nx test ui --watch
 ```
 
 ### Building for Production
