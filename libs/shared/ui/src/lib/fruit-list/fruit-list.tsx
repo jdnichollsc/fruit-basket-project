@@ -18,7 +18,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
 
   if (fruits.length === 0) {
     return (
-      <div className="text-center text-base-content/60 py-4">
+      <div data-testid="empty-fruit-list" className="text-center text-base-content/60 py-4">
         No fruits available
       </div>
     );
@@ -31,10 +31,11 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
           {deleteError}
         </p>
       )}
-      <ul className="space-y-2">
+      <ul data-testid="fruit-list" className="space-y-2">
         {fruits.map((fruit) => (
           <li
             key={fruit}
+            data-testid={`fruit-item-${fruit}`}
             className="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
           >
             {editing?.id === fruit ? (
@@ -43,6 +44,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   type="text"
                   value={editing.value}
                   onChange={(e) => setEditing({ ...editing, value: e.target.value })}
+                  data-testid={`edit-fruit-input-${fruit}`}
                   className={cn("input input-bordered input-sm w-full", editing.isLoading && "input-disabled")}
                   disabled={editing.isLoading}
                 />
@@ -61,6 +63,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   <button
                     type="button"
                     aria-label="Save changes"
+                    data-testid={`save-fruit-button-${fruit}`}
                     onClick={async () => {
                       setEditing({ ...editing, isLoading: true, error: undefined });
                       try {
@@ -89,6 +92,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   <button
                     type="button"
                     aria-label="Cancel editing"
+                    data-testid={`cancel-edit-button-${fruit}`}
                     onClick={() => setEditing(null)}
                     disabled={editing.isLoading}
                     className={cn("btn btn-ghost btn-sm", editing.isLoading && "btn-disabled")}
@@ -101,6 +105,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   <button
                     type="button"
                     aria-label="Edit fruit"
+                    data-testid={`edit-fruit-button-${fruit}`}
                     onClick={() => setEditing({ id: fruit, value: fruit })}
                     disabled={isLoading || editing !== null || deletingId === fruit}
                     className={cn("btn btn-ghost btn-sm", (isLoading || editing !== null || deletingId === fruit) && "btn-disabled")}
@@ -110,6 +115,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   <button
                     type="button"
                     aria-label="Delete fruit"
+                    data-testid={`delete-fruit-button-${fruit}`}
                     onClick={async () => {
                       setDeletingId(fruit);
                       try {

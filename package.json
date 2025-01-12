@@ -6,6 +6,7 @@
     "dev": "nx serve web",
     "build": "nx build web",
     "test": "nx run-many --target=test --all",
+    "test:e2e": "nx e2e web-e2e",
     "lint": "nx run-many --target=lint --all"
   },
   "private": true,
