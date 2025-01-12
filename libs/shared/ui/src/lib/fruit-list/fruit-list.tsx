@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
+import { cn } from '@fruit-basket/utils';
+
 import type { FruitListProps } from './fruit-list.types';
 
 interface EditingState {
@@ -12,6 +14,7 @@ interface EditingState {
 export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: FruitListProps) {
   const [editing, setEditing] = useState<EditingState | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   if (fruits.length === 0) {
     return (
@@ -40,7 +43,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                   type="text"
                   value={editing.value}
                   onChange={(e) => setEditing({ ...editing, value: e.target.value })}
-                  className="input input-bordered input-sm w-full"
+                  className={cn("input input-bordered input-sm w-full", editing.isLoading && "input-disabled")}
                   disabled={editing.isLoading}
                 />
                 {editing.error && (
@@ -52,7 +55,7 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
             ) : (
               <span className="text-base-content">{fruit}</span>
             )}
-            <div className="space-x-2">
+            <div className="space-x-2 flex justify-center items-center">
               {editing?.id === fruit ? (
                 <>
                   <button
@@ -72,16 +75,23 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                       }
                     }}
                     disabled={editing.isLoading}
-                    className="btn btn-ghost btn-sm"
+                    className={cn("btn btn-ghost btn-sm", editing.isLoading && "btn-disabled")}
                   >
-                    Save
+                    {editing.isLoading ? (
+                      <>
+                        <span className="loading loading-spinner"></span>
+                        Saving...
+                      </>
+                    ) : (
+                      'Save'
+                    )}
                   </button>
                   <button
                     type="button"
                     aria-label="Cancel editing"
                     onClick={() => setEditing(null)}
                     disabled={editing.isLoading}
-                    className="btn btn-ghost btn-sm"
+                    className={cn("btn btn-ghost btn-sm", editing.isLoading && "btn-disabled")}
                   >
                     Cancel
                   </button>
@@ -92,8 +102,8 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                     type="button"
                     aria-label="Edit fruit"
                     onClick={() => setEditing({ id: fruit, value: fruit })}
-                    disabled={isLoading || editing !== null}
-                    className="btn btn-ghost btn-sm"
+                    disabled={isLoading || editing !== null || deletingId === fruit}
+                    className={cn("btn btn-ghost btn-sm", (isLoading || editing !== null || deletingId === fruit) && "btn-disabled")}
                   >
                     Edit
                   </button>
@@ -101,17 +111,30 @@ export function FruitList({ fruits, isLoading = false, onEdit, onDelete }: Fruit
                     type="button"
                     aria-label="Delete fruit"
                     onClick={async () => {
+                      setDeletingId(fruit);
                       try {
                         await onDelete(fruit);
                         setDeleteError(null);
                       } catch (error) {
                         setDeleteError(error instanceof Error ? error.message : 'Failed to delete fruit');
+                      } finally {
+                        setDeletingId(null);
                       }
                     }}
-                    disabled={isLoading || editing !== null}
-                    className="btn btn-ghost btn-sm text-error hover:text-error"
+                    disabled={isLoading || editing !== null || deletingId === fruit}
+                    className={cn(
+                      "btn btn-ghost btn-sm text-error hover:text-error",
+                      (isLoading || editing !== null || deletingId === fruit) && "btn-disabled"
+                    )}
                   >
-                    Delete
+                    {deletingId === fruit ? (
+                      <>
+                        <span className="loading loading-spinner"></span>
+                        Deleting...
+                      </>
+                    ) : (
+                      'Delete'
+                    )}
                   </button>
                 </>
               )}

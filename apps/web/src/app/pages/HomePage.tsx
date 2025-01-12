@@ -23,7 +23,13 @@ export function HomePage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Fruit Basket</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        Fruit Basket{' '}
+        <span role="img" aria-label="shopping cart">🛒</span>
+        <span role="img" aria-label="chart increasing">📈</span>
+        <span role="img" aria-label="tomato">🍅</span>
+        <span role="img" aria-label="shopping bags">🛍️</span>
+      </h1>
       <FruitForm onAdd={addFruit} isLoading={isSubmitting} error={error} />
       <FruitList
         fruits={fruits}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { cn } from '@fruit-basket/utils';
 import type { FruitFormProps } from './fruit-form.types';
 
 export function FruitForm({ onAdd, isLoading = false, error }: FruitFormProps) {
@@ -25,15 +26,22 @@ export function FruitForm({ onAdd, isLoading = false, error }: FruitFormProps) {
             placeholder="Enter fruit name"
             disabled={isLoading}
             aria-label="Fruit name"
-            className="input input-bordered w-full"
+            className={cn("input input-bordered w-full", isLoading && "input-disabled")}
           />
         </label>
         <button
           type="submit"
           disabled={isLoading}
-          className="btn btn-primary"
+          className={cn("btn btn-primary", isLoading && "btn-disabled")}
         >
-          Add
+          {isLoading ? (
+            <>
+              <span className="loading loading-spinner"></span>
+              Adding...
+            </>
+          ) : (
+            'Add'
+          )}
         </button>
       </div>
       {error && (
