@@ -59,7 +59,8 @@ describe('HomePage', () => {
     });
 
     render(<HomePage />);
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText('Loading Fruit Basket...')).toBeInTheDocument();
+    expect(screen.getAllByRole('generic').filter(el => el.className.includes('skeleton'))).not.toHaveLength(0);
   });
 
   it('should render error state', () => {

@@ -58,7 +58,7 @@ export function HomePage() {
         fruits={fruits}
         isLoading={isSubmitting}
         onEdit={async (...rest) => {
-          updateFruit(...rest)
+          await updateFruit(...rest)
         }}
         onDelete={async (...rest) => {
           await deleteFruit(...rest)

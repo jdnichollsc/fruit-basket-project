@@ -27,6 +27,7 @@ export function FruitForm({ onAdd, isLoading = false, error }: FruitFormProps) {
             placeholder="Enter fruit name"
             disabled={isLoading}
             aria-label="Fruit name"
+            required
             className={cn("input input-bordered w-full", isLoading && "input-disabled")}
           />
         </label>
