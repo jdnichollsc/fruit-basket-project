@@ -75,10 +75,17 @@
     "tailwind-merge": "^2.6.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "npx nx affected:lint --fix",
-      "npx nx affected:test --configuration=ci",
-      "git add"
+    "apps/web/**/*.{js,jsx,ts,tsx}": [
+      "npx nx run web:lint --configuration=ci --fix=true",
+      "npx nx run web:test --configuration=ci"
+    ],
+    "libs/shared/ui/**/*.{js,jsx,ts,tsx}": [
+      "npx nx run ui:lint --configuration=ci --fix=true",
+      "npx nx run ui:test --configuration=ci"
+    ],
+    "libs/shared/utils/**/*.{js,jsx,ts,tsx}": [
+      "npx nx run utils:lint --configuration=ci --fix=true",
+      "npx nx run utils:test --configuration=ci"
     ]
   }
 }
