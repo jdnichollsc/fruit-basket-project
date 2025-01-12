@@ -20,6 +20,28 @@ describe('FruitList', () => {
     jest.clearAllMocks();
   });
 
+  it('should match snapshot with fruits', () => {
+    const { container } = render(<FruitList {...mockProps} />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot when empty', () => {
+    const { container } = render(<FruitList {...mockProps} fruits={[]} />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot when loading', () => {
+    const { container } = render(<FruitList {...mockProps} isLoading={true} />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot in edit mode', () => {
+    const { container } = render(<FruitList {...mockProps} />);
+    const editButton = screen.getAllByLabelText('Edit fruit')[0];
+    fireEvent.click(editButton);
+    expect(container).toMatchSnapshot();
+  });
+
   it('should render list of fruits', () => {
     render(<FruitList {...mockProps} />);
     

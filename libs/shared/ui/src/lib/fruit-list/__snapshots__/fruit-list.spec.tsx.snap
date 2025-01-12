@@ -1,0 +1,391 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FruitList should match snapshot in edit mode 1`] = `
+<div>
+  <div>
+    <ul
+      class="space-y-2"
+      data-testid="fruit-list"
+      style="opacity: 0;"
+    >
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Apple"
+      >
+        <div
+          class="flex-1 mr-2"
+          style="opacity: 0; height: 0px;"
+        >
+          <input
+            class="input input-bordered input-sm w-full"
+            data-testid="edit-fruit-input-Apple"
+            type="text"
+            value="Apple"
+          />
+        </div>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Save changes"
+              class="btn btn-ghost btn-sm"
+              data-testid="save-fruit-button-Apple"
+              type="button"
+            >
+              Save
+            </button>
+            <button
+              aria-label="Cancel editing"
+              class="btn btn-ghost btn-sm"
+              data-testid="cancel-edit-button-Apple"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Banana"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Banana
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm btn-disabled"
+              data-testid="edit-fruit-button-Banana"
+              disabled=""
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error btn-disabled"
+              data-testid="delete-fruit-button-Banana"
+              disabled=""
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Cherry"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Cherry
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm btn-disabled"
+              data-testid="edit-fruit-button-Cherry"
+              disabled=""
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error btn-disabled"
+              data-testid="delete-fruit-button-Cherry"
+              disabled=""
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`FruitList should match snapshot when empty 1`] = `
+<div>
+  <div
+    class="text-center text-base-content/60 py-4"
+    data-testid="empty-fruit-list"
+    style="opacity: 0; transform: translateY(20px);"
+  >
+    No fruits available
+  </div>
+</div>
+`;
+
+exports[`FruitList should match snapshot when loading 1`] = `
+<div>
+  <div>
+    <ul
+      class="space-y-2"
+      data-testid="fruit-list"
+      style="opacity: 0;"
+    >
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Apple"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Apple
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm btn-disabled"
+              data-testid="edit-fruit-button-Apple"
+              disabled=""
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error btn-disabled"
+              data-testid="delete-fruit-button-Apple"
+              disabled=""
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Banana"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Banana
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm btn-disabled"
+              data-testid="edit-fruit-button-Banana"
+              disabled=""
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error btn-disabled"
+              data-testid="delete-fruit-button-Banana"
+              disabled=""
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Cherry"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Cherry
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm btn-disabled"
+              data-testid="edit-fruit-button-Cherry"
+              disabled=""
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error btn-disabled"
+              data-testid="delete-fruit-button-Cherry"
+              disabled=""
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`FruitList should match snapshot with fruits 1`] = `
+<div>
+  <div>
+    <ul
+      class="space-y-2"
+      data-testid="fruit-list"
+      style="opacity: 0;"
+    >
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Apple"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Apple
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm"
+              data-testid="edit-fruit-button-Apple"
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error"
+              data-testid="delete-fruit-button-Apple"
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Banana"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Banana
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm"
+              data-testid="edit-fruit-button-Banana"
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error"
+              data-testid="delete-fruit-button-Banana"
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+      <li
+        class="flex items-center justify-between p-3 bg-base-100 rounded-lg shadow-sm border border-base-300"
+        data-testid="fruit-item-Cherry"
+      >
+        <span
+          class="text-base-content"
+          style="opacity: 0;"
+        >
+          Cherry
+        </span>
+        <div
+          class="space-x-2 flex justify-center items-center"
+        >
+          <div
+            class="flex gap-2"
+            style="opacity: 0; transform: translateX(-20px);"
+          >
+            <button
+              aria-label="Edit fruit"
+              class="btn btn-ghost btn-sm"
+              data-testid="edit-fruit-button-Cherry"
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              aria-label="Delete fruit"
+              class="btn btn-ghost btn-sm text-error hover:text-error"
+              data-testid="delete-fruit-button-Cherry"
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

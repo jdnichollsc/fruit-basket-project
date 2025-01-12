@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomePage should match snapshot in loading state 1`] = `
+<div>
+  <div
+    class="container mx-auto p-4"
+  >
+    <h1
+      class="text-2xl font-bold mb-4"
+      data-testid="page-title"
+    >
+      Fruit Basket
+       
+      <span
+        aria-label="shopping cart"
+        role="img"
+      >
+        🛒
+      </span>
+      <span
+        aria-label="tomato"
+        role="img"
+      >
+        🍅
+      </span>
+      <span
+        aria-label="shopping bags"
+        role="img"
+      >
+        🛍️
+      </span>
+    </h1>
+    <div
+      data-testid="fruit-form"
+    >
+      Fruit Form 
+       
+    </div>
+    <div
+      data-testid="fruit-list"
+    >
+      Fruit List 
+    </div>
+  </div>
+</div>
+`;
+
+exports[`HomePage should match snapshot with error 1`] = `
+<div>
+  <div
+    class="text-red-500"
+    data-testid="error-message"
+  >
+    Failed to load fruits
+  </div>
+</div>
+`;
+
+exports[`HomePage should match snapshot with fruits 1`] = `
+<div>
+  <div
+    class="container mx-auto p-4"
+  >
+    <h1
+      class="text-2xl font-bold mb-4"
+      data-testid="page-title"
+    >
+      Fruit Basket
+       
+      <span
+        aria-label="shopping cart"
+        role="img"
+      >
+        🛒
+      </span>
+      <span
+        aria-label="tomato"
+        role="img"
+      >
+        🍅
+      </span>
+      <span
+        aria-label="shopping bags"
+        role="img"
+      >
+        🛍️
+      </span>
+    </h1>
+    <div
+      data-testid="fruit-form"
+    >
+      Fruit Form 
+       
+    </div>
+    <div
+      data-testid="fruit-list"
+    >
+      Fruit List 
+      <div
+        data-testid="fruit-item-Apple"
+      >
+        <span>
+          Apple
+        </span>
+        <button>
+          Edit
+        </button>
+        <button>
+          Delete
+        </button>
+      </div>
+      <div
+        data-testid="fruit-item-Banana"
+      >
+        <span>
+          Banana
+        </span>
+        <button>
+          Edit
+        </button>
+        <button>
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

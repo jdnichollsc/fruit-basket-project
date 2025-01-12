@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FruitForm should match snapshot 1`] = `
+<div>
+  <form
+    class="mb-6"
+  >
+    <div
+      class="flex gap-2"
+    >
+      <label
+        class="flex-1 form-control"
+      >
+        <span
+          class="sr-only"
+        >
+          Fruit name
+        </span>
+        <input
+          aria-label="Fruit name"
+          class="input input-bordered w-full"
+          data-testid="add-fruit-input"
+          placeholder="Enter fruit name"
+          required=""
+          type="text"
+          value=""
+        />
+      </label>
+      <button
+        class="btn btn-primary min-w-20"
+        type="submit"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`FruitForm should match snapshot when loading 1`] = `
+<div>
+  <form
+    class="mb-6"
+  >
+    <div
+      class="flex gap-2"
+    >
+      <label
+        class="flex-1 form-control"
+      >
+        <span
+          class="sr-only"
+        >
+          Fruit name
+        </span>
+        <input
+          aria-label="Fruit name"
+          class="input input-bordered w-full input-disabled"
+          data-testid="add-fruit-input"
+          disabled=""
+          placeholder="Enter fruit name"
+          required=""
+          type="text"
+          value=""
+        />
+      </label>
+      <button
+        class="btn btn-primary min-w-20 btn-disabled"
+        disabled=""
+        type="submit"
+      >
+        <span
+          class="loading loading-spinner"
+        />
+        Adding...
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`FruitForm should match snapshot with error 1`] = `
+<div>
+  <form
+    class="mb-6"
+  >
+    <div
+      class="flex gap-2"
+    >
+      <label
+        class="flex-1 form-control"
+      >
+        <span
+          class="sr-only"
+        >
+          Fruit name
+        </span>
+        <input
+          aria-label="Fruit name"
+          class="input input-bordered w-full"
+          data-testid="add-fruit-input"
+          placeholder="Enter fruit name"
+          required=""
+          type="text"
+          value=""
+        />
+      </label>
+      <button
+        class="btn btn-primary min-w-20"
+        type="submit"
+      >
+        Add
+      </button>
+    </div>
+    <p
+      class="mt-2 text-sm text-error"
+      role="alert"
+    >
+      Test error message
+    </p>
+  </form>
+</div>
+`;

@@ -122,4 +122,43 @@ describe('HomePage', () => {
     expect(screen.getByTestId('fruit-form')).toHaveTextContent('Loading');
     expect(screen.getByTestId('fruit-list')).toHaveTextContent('Loading');
   });
+
+  it('should match snapshot in loading state', () => {
+    mockUseFruits.mockReturnValue({
+      fruits: [],
+      isLoading: true,
+      error: null,
+      addFruit: jest.fn(),
+      editFruit: jest.fn(),
+      deleteFruit: jest.fn(),
+    });
+    const { container } = render(<HomePage />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot with fruits', () => {
+    mockUseFruits.mockReturnValue({
+      fruits: ['Apple', 'Banana'],
+      isLoading: false,
+      error: null,
+      addFruit: jest.fn(),
+      editFruit: jest.fn(),
+      deleteFruit: jest.fn(),
+    });
+    const { container } = render(<HomePage />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot with error', () => {
+    mockUseFruits.mockReturnValue({
+      fruits: [],
+      isLoading: false,
+      error: 'Failed to load fruits',
+      addFruit: jest.fn(),
+      editFruit: jest.fn(),
+      deleteFruit: jest.fn(),
+    });
+    const { container } = render(<HomePage />);
+    expect(container).toMatchSnapshot();
+  });
 });

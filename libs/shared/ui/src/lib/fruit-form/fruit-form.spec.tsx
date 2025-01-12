@@ -15,6 +15,21 @@ describe('FruitForm', () => {
     jest.clearAllMocks();
   });
 
+  it('should match snapshot', () => {
+    const { container } = render(<FruitForm {...mockProps} />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot when loading', () => {
+    const { container } = render(<FruitForm {...mockProps} isLoading={true} />);
+    expect(container).toMatchSnapshot();
+  });
+
+  it('should match snapshot with error', () => {
+    const { container } = render(<FruitForm {...mockProps} error="Test error message" />);
+    expect(container).toMatchSnapshot();
+  });
+
   it('should render form with accessible elements', () => {
     render(<FruitForm {...mockProps} />);
     
