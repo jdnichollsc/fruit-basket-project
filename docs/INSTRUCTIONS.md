@@ -77,11 +77,8 @@ EOL
 
 ### Additional Dependencies
 ```sh
-# Install Framer Motion for animations
+# Install Framer Motion for animations and better UX
 npm install framer-motion
-
-# Add types for Framer Motion
-npm install -D @types/framer-motion
 ```
 
 ### DaisyUI Component Classes

@@ -9,6 +9,59 @@ The Fruit Basket project is a React application that demonstrates core JavaScrip
 - Jest and React Testing Library for testing
 - TailwindCSS for styling
 
+## Architecture Diagrams
+
+### Component Structure
+```mermaid
+graph TD
+    A[HomePage] --> B[FruitForm]
+    A --> C[FruitList]
+    C --> D[FruitItem]
+    A --> E[useFruits Hook]
+    E --> F[BASKET.API]
+```
+
+### Data Flow
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Components
+    participant H as useFruits Hook
+    participant A as BASKET.API
+    participant S as In-Memory Store
+
+    U->>C: Interact with UI
+    C->>H: Call Hook Method
+    H->>A: Make API Request
+    A->>S: Modify Store
+    S-->>A: Return Updated Data
+    A-->>H: Resolve Promise
+    H-->>C: Update State
+    C-->>U: Update UI
+```
+
+### CRUD Operations Flow
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Loading: User Action
+    Loading --> Success: API Response
+    Loading --> Error: API Error
+    Success --> Idle: Update UI
+    Error --> Idle: Show Error
+```
+
+### Test Flow
+```mermaid
+flowchart LR
+    A[Write Test] --> B[Run Test]
+    B --> C{Passes?}
+    C -->|No| D[Implement Feature]
+    D --> B
+    C -->|Yes| E[Refactor]
+    E --> B
+```
+
 ## Getting Started
 
 1. Clone the repository:

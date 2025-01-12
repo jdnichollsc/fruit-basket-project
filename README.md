@@ -1,5 +1,10 @@
 # Fruit Basket Project
 
+## Documentation
+
+- [Project Instructions](docs/INSTRUCTIONS.md) - Detailed instructions used to create the project
+- [Developer Onboarding](docs/ONBOARDING.md) - Guide for developers to get started with the codebase
+
 ## Overview
 
 The goal of this project is to test the understanding of core JS and React fundamentals.
