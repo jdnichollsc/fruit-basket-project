@@ -166,29 +166,6 @@ We'll follow these steps for each feature:
 5. Write integration test
 6. Implement integration
 
-## Utility Functions
-
-Create a utils library:
-```sh
-npx nx g @nx/react:lib utils --directory=shared
-```
-
-Add the following utilities:
-
-```typescript
-// libs/shared/utils/src/lib/styles.ts
-import clsx, { ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export const replaceNewLinesWithSpaces = (str: string) => {
-  return str.replace(/\s{2,}/g, ' ').trim();
-};
-
-export const cn = (...inputs: ClassValue[]) => {
-  return twMerge(replaceNewLinesWithSpaces(clsx(inputs)));
-};
-```
-
 ## Implementation Order
 
 1. API Module:
