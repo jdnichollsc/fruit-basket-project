@@ -3,6 +3,7 @@ import { FruitForm, FruitList } from '@fruit-basket/ui';
 
 import { useFruits } from '../hooks/useFruits';
 
+// Test comment to verify Husky pre-commit hooks
 function SkeletonPage() {
   return (
     <div className="container mx-auto p-4">
