@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { cn } from '@fruit-basket/utils';
+
 import type { FruitFormProps } from './fruit-form.types';
 
 export function FruitForm({ onAdd, isLoading = false, error }: FruitFormProps) {
@@ -32,7 +33,7 @@ export function FruitForm({ onAdd, isLoading = false, error }: FruitFormProps) {
         <button
           type="submit"
           disabled={isLoading}
-          className={cn("btn btn-primary", isLoading && "btn-disabled")}
+          className={cn("btn btn-primary min-w-20", isLoading && "btn-disabled")}
         >
           {isLoading ? (
             <>
