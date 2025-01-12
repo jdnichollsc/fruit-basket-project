@@ -3,25 +3,24 @@ import '@testing-library/jest-dom';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { HomePage } from './HomePage';
 import { useFruits } from '../hooks/useFruits';
-import * as promptService from '../services/prompt';
+import type { FruitFormProps, FruitListProps } from '@fruit-basket/ui';
 
 // Mock the dependencies
 jest.mock('../hooks/useFruits');
-jest.mock('../services/prompt');
 jest.mock('@fruit-basket/ui', () => ({
-  FruitForm: ({ onAdd, isLoading, error }: any) => (
-    <div data-testid="fruit-form" onClick={() => onAdd('Cherry')}>
+  FruitForm: ({ onAdd, isLoading, error }: Partial<FruitFormProps>) => (
+    <div data-testid="fruit-form" onClick={() => onAdd?.('Cherry')}>
       Fruit Form {isLoading ? 'Loading' : ''} {error || ''}
     </div>
   ),
-  FruitList: ({ fruits, isLoading, onEdit, onDelete }: any) => (
+  FruitList: ({ fruits, isLoading, onEdit, onDelete }: Partial<FruitListProps>) => (
     <div data-testid="fruit-list">
       Fruit List {isLoading ? 'Loading' : ''}
-      {fruits.map((fruit: string) => (
+      {fruits?.map((fruit: string) => (
         <div key={fruit} data-testid={`fruit-item-${fruit}`}>
           <span>{fruit}</span>
-          <button onClick={() => onEdit(fruit, 'Updated ' + fruit)}>Edit</button>
-          <button onClick={() => onDelete(fruit)}>Delete</button>
+          <button onClick={() => onEdit?.(fruit, 'Updated ' + fruit)}>Edit</button>
+          <button onClick={() => onDelete?.(fruit)}>Delete</button>
         </div>
       ))}
     </div>

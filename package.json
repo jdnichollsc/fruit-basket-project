@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "nx serve web",
     "build": "nx build web",
-    "test": "nx test web",
-    "lint": "nx lint web"
+    "test": "nx run-many --target=test --all",
+    "lint": "nx run-many --target=lint --all"
   },
   "private": true,
   "devDependencies": {
